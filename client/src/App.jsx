@@ -11,6 +11,8 @@ import SignUp from './pages/SignUp'
 import UpdateListing from './pages/UpdateListing';
 import CreateListing from './pages/CreateListing'
 import Listing from './pages/Listing'
+import Search from './pages/Search'
+import PrivateRoute from './components/PrivateRoute'
 
 
 const App = () => {
@@ -23,15 +25,16 @@ const App = () => {
     <Route path='/' element={<Home/>}/>
     <Route path='/about' element={<About/>}/>
     <Route path='/sign-in' element={<SignIn/>}/>
+    <Route path='/search' element={<Search/>}/>
     <Route path='/sign-up' element={<SignUp/>}/>
     <Route path='/listing/:listingId' element={<Listing />} />
     <Route
             path='/update-listing/:listingId'
             element={<UpdateListing />}
           />
-    
+    <Route element={<PrivateRoute />}>
        <Route path='/profile' element={ <Profile/>} /> 
-    
+    </Route>
   </Routes>
 </BrowserRouter>
 </>
