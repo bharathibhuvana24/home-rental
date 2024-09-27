@@ -13,6 +13,10 @@ import {
     FaParking,
     FaShare,
   } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import Contact from '../components/Contact';
+
   // https://sabe.io/blog/javascript-format-numbers-commas#:~:text=The%20best%20way%20to%20format,format%20the%20number%20with%20commas.
 
 export default function Listing() {
@@ -21,27 +25,30 @@ export default function Listing() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [contact, setContact] = useState(false);
   const params = useParams();
+  const {currentUser} = useSelector((state) => state.user);
   useEffect(() => {
     const fetchListing = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/listing/get/${params.listingId}`);
-        const data = await res.json();
-        if (data.success === false) {
+        try {
+          setLoading(true);
+          const res = await axios.get(`http://localhost:3000/api/listing/get/${params.listingId}`);
+          const data = res.data;
+          if (data.success === false) {
+            setError(true);
+            setLoading(false);
+            return;
+          }
+          setListing(data);
+          setLoading(false);
+          setError(false);
+        } catch (error) {
           setError(true);
           setLoading(false);
-          return;
         }
-        setListing(data);
-        setLoading(false);
-        setError(false);
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-      }
-    };
-    fetchListing();
+      };
+      
+      fetchListing();
   }, [params.listingId]);
   console.log(loading);
   return (
@@ -130,6 +137,12 @@ export default function Listing() {
                 {listing.furnished ? 'Furnished' : 'Unfurnished'}
               </li>
             </ul>
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button onClick={()=>setContact(true)} className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'>
+                Contact landlord
+              </button>
+            )}
+            {contact && <Contact listing={listing}/>}
           </div>
         </div>
       )}
