@@ -9,6 +9,7 @@ import Profile from './Pages/Profile'
 import Header from './Components/Header'
 import SignUp from './pages/SignUp'
 import PrivateRoute from './components/PrivateRoute'
+import CreateListing from './pages/CreateListing'
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
 <BrowserRouter>
 <Header/>
   <Routes>
+  <Route path='/create-listing' element={<CreateListing />} />
     <Route path='/' element={<Home/>}/>
     <Route path='/about' element={<About/>}/>
     <Route path='/sign-in' element={<SignIn/>}/>
