@@ -4,6 +4,7 @@ import cors from 'cors';
 import userRouter from './routes/user.routes.js';
 import dotenv from 'dotenv';
 import authRouter from './routes/auth.routes.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // Using CORS options for all routes
 app.use(express.json());
+app.use(cookieParser());
 
 mongoose.connect(process.env.MONGO)
   .then(() => {
