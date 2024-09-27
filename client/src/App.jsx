@@ -8,7 +8,7 @@ import SignIn from './pages/SignIn'
 import Profile from './Pages/Profile'
 import Header from './Components/Header'
 import SignUp from './pages/SignUp'
-
+import UpdateListing from './pages/UpdateListing';
 import CreateListing from './pages/CreateListing'
 
 
@@ -23,6 +23,10 @@ const App = () => {
     <Route path='/about' element={<About/>}/>
     <Route path='/sign-in' element={<SignIn/>}/>
     <Route path='/sign-up' element={<SignUp/>}/>
+    <Route
+            path='/update-listing/:listingId'
+            element={<UpdateListing />}
+          />
     
        <Route path='/profile' element={ <Profile/>} /> 
     
