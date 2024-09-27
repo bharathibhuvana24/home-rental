@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -12,18 +14,19 @@ export default function SignIn() {
       [e.target.id]: e.target.value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch('/api/auth/signin', {
-        method: 'POST',
+      console.log(formData); // Log formData to verify its structure
+  
+      const res = await axios.post("http://localhost:3000/api/auth/signin", formData, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
       });
-      const data = await res.json();
+      const data = res.data;
       console.log(data);
       if (data.success === false) {
         setLoading(false);
@@ -35,9 +38,24 @@ export default function SignIn() {
       navigate('/');
     } catch (error) {
       setLoading(false);
-      setError(error.message);
+      console.error('Error details:', error); // Log the entire error object
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        console.error('Response headers:', error.response.headers);
+        setError(error.response.data.message);
+      } else if (error.request) {
+        console.error('Request data:', error.request);
+        setError('No response received from server.');
+      } else {
+        console.error('Error message:', error.message);
+        setError(error.message);
+      }
     }
   };
+  
+  
+  
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
